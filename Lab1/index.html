@@ -69,14 +69,14 @@
         fillOpacity: 0.5
     }).addTo(mymap);
     
-    	var mansuetoPopup;
+var mansuetoPopup;
 	function showMansuetoPopup(checkbox) {
-	    if (checkbox.checked) {
-            mansuetoPopup = L.popup()
-		    .setLatLng([41.7919509033851, -87.6008962279752])
-		    .setContent("This is also a library!")
-		    .openOn(mymap);
-	    } else {
+	if (checkbox.checked) {
+	mansuetoPopup = L.popup()
+		.setLatLng([41.7919509033851, -87.6008962279752])
+		.setContent("This is also a library!")
+		.openOn(mymap);
+	} else {
 		if (mansuetoPopup) {
 		mymap.closePopup(mansuetoPopup);
                 mansuetoPopup = null;
@@ -113,9 +113,9 @@ var rockefellerPopup;
 	function showRockefellerPopup(checkbox) {
 	if (checkbox.checked) {
         rockefellerPopup = L.popup()
-        .setLatLng([41.78825281357345, -87.59692409424544])
-        .setContent("I am Rockefeller!")
-        .openOn(mymap);
+		.setLatLng([41.78825281357345, -87.59692409424544])
+        	.setContent("I am Rockefeller!")
+        	.openOn(mymap);
         } else {
        		if (rockefellerPopup) {
         	mymap.closePopup(rockefellerPopup);
@@ -144,23 +144,18 @@ var rockefellerPopup;
 //(17) you can also comment out mapped items if you do not want them to draw. note that the var reference above is still present but below i have turned off a layer
     L.geoJSON(walker303).addTo(mymap);
 
-    var walkerPopup; // Variable to store the popup instance for the "Walker" checkbox
-
-    function showWalkerPopup(checkbox) {
-        if (checkbox.checked) {
-            // Create and show the popup
-            walkerPopup = L.popup()
-                .setLatLng([41.789036606405276, -87.59870347936963])
-                .setContent("This is a library.")
-                .openOn(mymap);
-        } else {
-            // Remove the popup if it exists
-            if (walkerPopup) {
-                mymap.closePopup(walkerPopup);
-                walkerPopup = null; // Reset the popup variable
-            }
-        }
-    }
+var walkerPopup;
+	function showWalkerPopup(checkbox) {
+	if (checkbox.checked) {
+        walkerPopup = L.popup()
+		.setLatLng([41.789036606405276, -87.59870347936963])
+		.setContent("This is a library.")
+		.openOn(mymap);
+	} else {
+		if (walkerPopup) {
+		mymap.closePopup(walkerPopup);
+                walkerPopup = null;
+        }}}
 //(18) Bonus action: think about how you would write some pop up text into your "pointofinterest" layer. Look at how it is done above. Read online help. Ask your neighbor. There are multiple approaches!
 
 </script>
