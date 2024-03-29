@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!--(1) This is the head section, where you set the title of the web page, link in any style sheets, 
-	and link to any javascript files/libraries you want to use in the web map-->
-	
-	<!-- (2) Notice how you can use the left angle bracket, exclamation and dashes to break the code and leave comments here, 
-	across multiple lines, even, but always make sure to close with two dashes and right angle bracket -->
-	
-	
-	<title>Parker Otto</title>
+    <!--(1) This is the head section, where you set the title of the web page, link in any style sheets, 
+    and link to any javascript files/libraries you want to use in the web map-->
+    
+    <!-- (2) Notice how you can use the left angle bracket, exclamation and dashes to break the code and leave comments here, 
+    across multiple lines, even, but always make sure to close with two dashes and right angle bracket -->
+    
+    
+    <title>Parker Otto</title>
 
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
-	<!--(3) style sheets are usually packaged or hosted online, but you could also download this file to your repository and reference it-->
+    <!--(3) style sheets are usually packaged or hosted online, but you could also download this file to your repository and reference it-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
     
-	<!--(4) finally in the head, scripts themselves tell the web browser how to handle user-initiated events and draw map features-->
-	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+    <!--(4) finally in the head, scripts themselves tell the web browser how to handle user-initiated events and draw map features-->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 
 
-	
+    
 </head>
-	<hd>Parker Otto</hd>
+    <h1>Parker Otto</h1>
 <body>
 
 <input type="button" id="popupbutton" value="Show Popup" onclick="popup()"/>
@@ -48,70 +48,75 @@
 //(8) note that you might also see "const" or "let" used to identify variables in code, we will go over these in a future lesson
 
 // (9) in this variable, you define the longitude, latitude, and zoom level of the user map when they load the page, then follow with the tile layer you want (here it is mapbox)
-	
-	
-	var mymap = L.map('mapid').setView([41.79116133977498, -87.59823778348704], 16);
-	L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
-	minZoom: 0,
-	maxZoom: 20,
-	attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	ext: 'png'
-	}).addTo(mymap);
-	
+    
+    
+    var mymap = L.map('mapid').setView([41.79116133977498, -87.59823778348704], 16);
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+    minZoom: 0,
+    maxZoom: 20,
+    attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    ext: 'png'
+    }).addTo(mymap);
+    
 //(10) right above here, you see you're adding this tileset and setting the max zoom level of "mymap" 
 
 //(11) this is how you define individual features on the map - a marker, a cirlce, a polygon. You could also call up a variable and point it to a hosted GIS file to load it in.
 //(12) note that each popup has preloaded text here. You could also have a variable that points attributes in a dataset to populate a popup; we will do this in the future
-	L.marker([41.790651959483505, -87.60287546053172]).addTo(mymap)
-		.bindPopup("<b>Hello world!</b><br />I open automatically.").openPopup();
+    L.marker([41.790651959483505, -87.60287546053172]).addTo(mymap)
+        .bindPopup("<b>Hello world!</b><br />I open automatically.").openPopup();
 
-	L.circle([41.7919509033851, -87.6008962279752], 200, {
-		color: 'red',
-		fillColor: '#f03',
-		fillOpacity: 0.5
-	}).addTo(mymap);
+    L.circle([41.7919509033851, -87.6008962279752], 200, {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5
+    }).addTo(mymap);
 
-	function showMansuetoPopup() {
-        var mansuetoCheckbox = document.getElementById("mansuetoCheckbox");
-        if (mansuetoCheckbox.checked) {
-            L.popup()
-                .setLatLng([41.7919509033851, -87.6008962279752])
-                .setContent("This is also a library!")
+    var walkerPopup; // Variable to store the popup instance for the "Walker" checkbox
+
+    function showWalkerPopup(checkbox) {
+        if (checkbox.checked) {
+            // Create and show the popup
+            walkerPopup = L.popup()
+                .setLatLng([41.789036606405276, -87.59870347936963])
+                .setContent("This is a library.")
                 .openOn(mymap);
         } else {
-            if (mansuetoPopup) {
-                mansuetoPopup.remove();
+            // Remove the popup if it exists
+            if (walkerPopup) {
+                mymap.closePopup(walkerPopup);
+                walkerPopup = null; // Reset the popup variable
             }
-	}
+        }
     }
-	//(13)notice that, with leaflet, you can set the color of the outline by using major color names, as well as the fill color with hex codes
+
+//(13)notice that, with leaflet, you can set the color of the outline by using major color names, as well as the fill color with hex codes
 
 
-	L.polygon([
-		[41.78889106742568, -87.59718434556508],
-		[41.78868695036127, -87.5971725890089],
-		[41.78868695036127, -87.59727503899718],
-		[41.78855421130797, -87.59727335948963],
-  		[41.788560472590206, -87.59717090950079],
-  		[41.78817642552161, -87.59716258438245],
-  		[41.78817893004907, -87.59692073522922],
-  		[41.78820272305782, -87.59692241473734],
-  		[41.78820397532127, -87.59684179835274],
-  		[41.7882565703608, -87.59684179835274],
-  		[41.78825281357345, -87.59692409424544],
-  		[41.78856212164098, -87.59693249178538],
-  		[41.788560869384526, -87.59680820819231],
-  		[41.78869861743928, -87.59681492622474],
-  		[41.78869861743928, -87.5968485163846],
-  		[41.788810067920934, -87.5968485163846],
-  		[41.78880756341812, -87.59694256883348],
-  		[41.78886641921474, -87.59694088932537],
-  		[41.78886767146486, -87.59698287702577],
-  		[41.788892716467956, -87.59698287702577],
-  		[41.78889106742568, -87.59718434556508]	
-	]).addTo(mymap);
+    L.polygon([
+        [41.78889106742568, -87.59718434556508],
+        [41.78868695036127, -87.5971725890089],
+        [41.78868695036127, -87.59727503899718],
+        [41.78855421130797, -87.59727335948963],
+        [41.788560472590206, -87.59717090950079],
+        [41.78817642552161, -87.59716258438245],
+        [41.78817893004907, -87.59692073522922],
+        [41.78820272305782, -87.59692241473734],
+        [41.78820397532127, -87.59684179835274],
+        [41.7882565703608, -87.59684179835274],
+        [41.78825281357345, -87.59692409424544],
+        [41.78856212164098, -87.59693249178538],
+        [41.788560869384526, -87.59680820819231],
+        [41.78869861743928, -87.59681492622474],
+        [41.78869861743928, -87.5968485163846],
+        [41.788810067920934, -87.5968485163846],
+        [41.78880756341812, -87.59694256883348],
+        [41.78886641921474, -87.59694088932537],
+        [41.78886767146486, -87.59698287702577],
+        [41.788892716467956, -87.59698287702577],
+        [41.78889106742568, -87.59718434556508]    
+    ]).addTo(mymap);
 
-	function showRockefellerPopup() {
+    function showRockefellerPopup() {
         var rockefellerCheckbox = document.getElementById("rockefellerCheckbox");
         if (rockefellerCheckbox.checked) {
             L.popup()
@@ -122,16 +127,16 @@
             if (rockefellerPopup) {
                 rockefellerPopup.remove();
             }
-	}
+        }
     }
-	
-	//(14)three nodes - the above code is drawing is a triangle... you can add more nodes to the polygon by separating each with a comma
+    
+    //(14)three nodes - the above code is drawing is a triangle... you can add more nodes to the polygon by separating each with a comma
 
-	//(15)here you could set the attributes of the popup instead of setting each to specific text
-	var popup = L.popup();
+    //(15)here you could set the attributes of the popup instead of setting each to specific text
+    var popup = L.popup();
 
-	//(16) this variable is a GeoJSON file! But it's not yet added to the map. Can you figure out why, and fix it? And no, it's not the order of the coordinates!
-		var walker303 = {
+    //(16) this variable is a GeoJSON file! But it's not yet added to the map. Can you figure out why, and fix it? And no, it's not the order of the coordinates!
+        var walker303 = {
     "type": "Feature",
     "properties": {
         "name": "Love Library",
@@ -145,20 +150,26 @@
 };
 
 //(17) you can also comment out mapped items if you do not want them to draw. note that the var reference above is still present but below i have turned off a layer
-	L.geoJSON(walker303).addTo(mymap);
+    L.geoJSON(walker303).addTo(mymap);
 
-	function showWalkerPopup(checkbox) {
-        var walkerPopup = L.popup()
-            .setLatLng([41.789036606405276, -87.59870347936963])
-            .setContent("This is a library.");
-
+    function showWalkerPopup(checkbox) {
         if (checkbox.checked) {
-            walkerPopup.openOn(mymap);
+            // Create and show the popup
+            walkerPopup = L.popup()
+                .setLatLng([41.789036606405276, -87.59870347936963])
+                .setContent("This is a library.")
+                .openOn(mymap);
         } else {
-            walkerPopup.remove();
+            // Remove the popup if it exists
+            if (walkerPopup) {
+                mymap.closePopup(walkerPopup);
+                walkerPopup = null; // Reset the popup variable
+            }
         }
     }
 
 //(18) Bonus action: think about how you would write some pop up text into your "pointofinterest" layer. Look at how it is done above. Read online help. Ask your neighbor. There are multiple approaches!
 
 </script>
+</body>
+</html>
