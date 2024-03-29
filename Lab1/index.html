@@ -27,19 +27,16 @@
 	<hd>Parker Otto</hd>
 <body>
 
-
-<!-- (5) a "div" is a division of the code; you're basically telling the browser to make a container here, size 600 by 400 -->
-<div id="mapid" style="width: 1500px; height: 1500px;"></div>
-	
-<!-- Button -->
 <input type="button" id="popupbutton" value="Show Popup" onclick="popup()"/>
 
-<!-- Checkboxes -->
 <ul id="checkBundle">
     <li><label><input type="checkbox" id="walkerCheckbox" onchange="showWalkerPopup()" />Walker</label></li>
     <li><label><input type="checkbox" />Mansueto</label></li>
     <li><label><input type="checkbox" />Rockefeller</label></li>
 </ul>
+
+<!-- (5) a "div" is a division of the code; you're basically telling the browser to make a container here, size 600 by 400 -->
+<div id="mapid" style="width: 1100px; height: 1100px;"></div>
 
 <script>
 //(6) when you are outside of the head and outside of functions, you can use just two slashes to leave single-line comments like this and you don't need to close
