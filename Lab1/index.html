@@ -143,20 +143,19 @@
 
 //(17) you can also comment out mapped items if you do not want them to draw. note that the var reference above is still present but below i have turned off a layer
 	L.geoJSON(walker303,{}).addTo(mymap);
-	
-	function showWalkerPopup() {
-        var walkerCheckbox = document.getElementById("walkerCheckbox");
-        if (walkerCheckbox.checked) {
-            L.popup()
-                .setLatLng([41.789036606405276, -87.59870347936963])
-                .setContent("This is a library!")
-                .openOn(mymap);
+
+	function showWalkerPopup(checkbox) {
+        var walkerPopup = L.popup()
+            .setLatLng([41.789036606405276, -87.59870347936963])
+            .setContent("This is a library.");
+
+        if (checkbox.checked) {
+            walkerPopup.openOn(mymap);
         } else {
-            if (walkerPopup) {
-                walkerPopup.remove();
-            }
-	}
+            walkerPopup.remove();
+        }
     }
+
 //(18) Bonus action: think about how you would write some pop up text into your "pointofinterest" layer. Look at how it is done above. Read online help. Ask your neighbor. There are multiple approaches!
 
 </script>
