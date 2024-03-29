@@ -31,8 +31,8 @@
 
 <ul id="checkBundle">
     <li><label><input type="checkbox" id="walkerCheckbox" onchange="showWalkerPopup(this)" />Walker</label></li>
-    <li><label><input type="checkbox" id="mansuetoCheckbox" onchange="showMansuetoPopup()" />Mansueto</label></li>
-    <li><label><input type="checkbox" id="rockefellerCheckbox" onchange="showRockefellerPopup()" />Rockefeller</label></li>
+    <li><label><input type="checkbox" id="mansuetoCheckbox" onchange="showMansuetoPopup(this)" />Mansueto</label></li>
+    <li><label><input type="checkbox" id="rockefellerCheckbox" onchange="showRockefellerPopup(this)" />Rockefeller</label></li>
 </ul>
 
 <!-- (5) a "div" is a division of the code; you're basically telling the browser to make a container here, size 600 by 400 -->
@@ -51,11 +51,9 @@
     
     
     var mymap = L.map('mapid').setView([41.79116133977498, -87.59823778348704], 16);
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
-    minZoom: 0,
-    maxZoom: 20,
-    attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    ext: 'png'
+    L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
     }).addTo(mymap);
     
 //(10) right above here, you see you're adding this tileset and setting the max zoom level of "mymap" 
@@ -71,6 +69,42 @@
         fillOpacity: 0.5
     }).addTo(mymap);
 
+    var rockefellerPopup; // Variable to store the popup instance for the "Walker" checkbox
+
+    function showRockefellerPopup(checkbox) {
+        if (checkbox.checked) {
+            // Create and show the popup
+            rockefellerPopup = L.popup()
+                .setLatLng([41.78825281357345, -87.59692409424544])
+                .setContent("I am Rockefeller!")
+                .openOn(mymap);
+        } else {
+            // Remove the popup if it exists
+            if (rockefellerPopup) {
+                mymap.closePopup(rockefellerPopup);
+                rockefellerPopup = null; // Reset the popup variable
+            }
+        }
+    }
+    
+    var mansuetoPopup; // Variable to store the popup instance for the "Walker" checkbox
+
+    function showMansuetoPopup(checkbox) {
+        if (checkbox.checked) {
+            // Create and show the popup
+            walkerPopup = L.popup()
+                .setLatLng([41.7919509033851, -87.6008962279752])
+                .setContent("This is also a library!")
+                .openOn(mymap);
+        } else {
+            // Remove the popup if it exists
+            if (mansuetoPopup) {
+                mymap.closePopup(mansuetoPopup);
+                mansuetoPopup = null; // Reset the popup variable
+            }
+        }
+    }
+    
     var walkerPopup; // Variable to store the popup instance for the "Walker" checkbox
 
     function showWalkerPopup(checkbox) {
