@@ -68,60 +68,19 @@
         fillColor: '#00FF00',
         fillOpacity: 0.5
     }).addTo(mymap);
-
-    var rockefellerPopup; // Variable to store the popup instance for the "Walker" checkbox
-
-    function showRockefellerPopup(checkbox) {
-        if (checkbox.checked) {
-            // Create and show the popup
-            rockefellerPopup = L.popup()
-                .setLatLng([41.78825281357345, -87.59692409424544])
-                .setContent("I am Rockefeller!")
-                .openOn(mymap);
-        } else {
-            // Remove the popup if it exists
-            if (rockefellerPopup) {
-                mymap.closePopup(rockefellerPopup);
-                rockefellerPopup = null; // Reset the popup variable
-            }
-        }
-    }
     
-    var mansuetoPopup; // Variable to store the popup instance for the "Walker" checkbox
-
-    function showMansuetoPopup(checkbox) {
-        if (checkbox.checked) {
-            // Create and show the popup
+    	var mansuetoPopup;
+	function showMansuetoPopup(checkbox) {
+	    if (checkbox.checked) {
             walkerPopup = L.popup()
-                .setLatLng([41.7919509033851, -87.6008962279752])
-                .setContent("This is also a library!")
-                .openOn(mymap);
-        } else {
-            // Remove the popup if it exists
-            if (mansuetoPopup) {
-                mymap.closePopup(mansuetoPopup);
-                mansuetoPopup = null; // Reset the popup variable
-            }
-        }
-    }
-    
-    var walkerPopup; // Variable to store the popup instance for the "Walker" checkbox
-
-    function showWalkerPopup(checkbox) {
-        if (checkbox.checked) {
-            // Create and show the popup
-            walkerPopup = L.popup()
-                .setLatLng([41.789036606405276, -87.59870347936963])
-                .setContent("This is a library.")
-                .openOn(mymap);
-        } else {
-            // Remove the popup if it exists
-            if (walkerPopup) {
-                mymap.closePopup(walkerPopup);
-                walkerPopup = null; // Reset the popup variable
-            }
-        }
-    }
+		    .setLatLng([41.7919509033851, -87.6008962279752])
+		    .setContent("This is also a library!")
+		    .openOn(mymap);
+	    } else {
+		if (mansuetoPopup) {
+		mymap.closePopup(mansuetoPopup);
+                mansuetoPopup = null;
+	}}}
 
 //(13)notice that, with leaflet, you can set the color of the outline by using major color names, as well as the fill color with hex codes
 
@@ -149,20 +108,19 @@
         [41.788892716467956, -87.59698287702577],
         [41.78889106742568, -87.59718434556508]    
     ]).addTo(mymap);
-
-    function showRockefellerPopup(checkbox) {
-        if (checkbox.checked) {
-            rockefellerPopup = L.popup()
-                .setLatLng([41.78825281357345, -87.59692409424544])
-                .setContent("I am Rockefeller!")
-                .openOn(mymap);
+   
+var rockefellerPopup;
+	function showRockefellerPopup(checkbox) {
+	if (checkbox.checked) {
+        rockefellerPopup = L.popup()
+        .setLatLng([41.78825281357345, -87.59692409424544])
+        .setContent("I am Rockefeller!")
+        .openOn(mymap);
         } else {
-            if (rockefellerPopup) {
-                mymap.closePopup(rockefellerPopup);
-                rockefellerPopup = null;
-            }
-        }
-    }
+       		if (rockefellerPopup) {
+        	mymap.closePopup(rockefellerPopup);
+        	rockefellerPopup = null;
+	}}}
 
     //(14)three nodes - the above code is drawing is a triangle... you can add more nodes to the polygon by separating each with a comma
 
@@ -186,6 +144,8 @@
 //(17) you can also comment out mapped items if you do not want them to draw. note that the var reference above is still present but below i have turned off a layer
     L.geoJSON(walker303).addTo(mymap);
 
+    var walkerPopup; // Variable to store the popup instance for the "Walker" checkbox
+
     function showWalkerPopup(checkbox) {
         if (checkbox.checked) {
             // Create and show the popup
@@ -201,7 +161,6 @@
             }
         }
     }
-
 //(18) Bonus action: think about how you would write some pop up text into your "pointofinterest" layer. Look at how it is done above. Read online help. Ask your neighbor. There are multiple approaches!
 
 </script>
