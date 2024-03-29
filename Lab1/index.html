@@ -31,8 +31,8 @@
 
 <ul id="checkBundle">
     <li><label><input type="checkbox" id="walkerCheckbox" onchange="showWalkerPopup()" />Walker</label></li>
-    <li><label><input type="checkbox" />Mansueto</label></li>
-    <li><label><input type="checkbox" />Rockefeller</label></li>
+    <li><label><input type="checkbox" id="mansuetoCheckbox" onchange="showMansuetoPopup()" />Mansueto</label></li>
+    <li><label><input type="checkbox" id="rockefellerCheckbox" onchange="showRockefellerPopup()" />Rockefeller</label></li>
 </ul>
 
 <!-- (5) a "div" is a division of the code; you're basically telling the browser to make a container here, size 600 by 400 -->
@@ -66,7 +66,21 @@
 		color: 'red',
 		fillColor: '#f03',
 		fillOpacity: 0.5
-	}).addTo(mymap).bindPopup("This is also a library.");
+	}).addTo(mymap);
+
+	function showMansuetoPopup() {
+        var mansuetoCheckbox = document.getElementById("mansuetoCheckbox");
+        if (mansuetoCheckbox.checked) {
+            L.popup()
+                .setLatLng([41.789036606405276, -87.59870347936963])
+                .setContent("This is also a library!")
+                .openOn(mymap);
+        } else {
+            if (mansuetoPopup) {
+                mansuetoPopup.remove();
+            }
+	}
+    }
 	//(13)notice that, with leaflet, you can set the color of the outline by using major color names, as well as the fill color with hex codes
 
 
@@ -92,7 +106,22 @@
   		[41.78886767146486, -87.59698287702577],
   		[41.788892716467956, -87.59698287702577],
   		[41.78889106742568, -87.59718434556508]	
-	]).addTo(mymap).bindPopup("I am Rockefeller.");
+	]).addTo(mymap);
+
+	function showRockefellerPopup() {
+        var rockefellerCheckbox = document.getElementById("rockefellerCheckbox");
+        if (rockefellerCheckbox.checked) {
+            L.popup()
+                .setLatLng([41.789036606405276, -87.59870347936963])
+                .setContent("I am Rockefeller!")
+                .openOn(mymap);
+        } else {
+            if (rockefellerPopup) {
+                rockefellerPopup.remove();
+            }
+	}
+    }
+	
 	//(14)three nodes - the above code is drawing is a triangle... you can add more nodes to the polygon by separating each with a comma
 
 	//(15)here you could set the attributes of the popup instead of setting each to specific text
@@ -122,7 +151,11 @@
                 .setLatLng([41.789036606405276, -87.59870347936963])
                 .setContent("This is a library!")
                 .openOn(mymap);
-        }
+        } else {
+            if (walkerPopup) {
+                walkerPopup.remove();
+            }
+	}
     }
 //(18) Bonus action: think about how you would write some pop up text into your "pointofinterest" layer. Look at how it is done above. Read online help. Ask your neighbor. There are multiple approaches!
 
