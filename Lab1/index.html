@@ -52,14 +52,14 @@
 
 //(11) this is how you define individual features on the map - a marker, a cirlce, a polygon. You could also call up a variable and point it to a hosted GIS file to load it in.
 //(12) note that each popup has preloaded text here. You could also have a variable that points attributes in a dataset to populate a popup; we will do this in the future
-	L.marker([41.78690767353724, -87.60065026886691]).addTo(mymap)
+	L.marker([41.790651959483505, -87.60287546053172]).addTo(mymap)
 		.bindPopup("<b>Hello world!</b><br />I open automatically.").openPopup();
 
 	L.circle([41.7919509033851, -87.6008962279752], 200, {
-		color: 'green',
+		color: 'red',
 		fillColor: '#f03',
 		fillOpacity: 0.5
-	}).addTo(mymap).bindPopup("I am a circle.");
+	}).addTo(mymap).bindPopup("This is also a library.");
 	//(13)notice that, with leaflet, you can set the color of the outline by using major color names, as well as the fill color with hex codes
 
 
@@ -106,7 +106,7 @@
 };
 
 //(17) you can also comment out mapped items if you do not want them to draw. note that the var reference above is still present but below i have turned off a layer
-//	L.geoJSON(walker303,{}).addTo(mymap);
+	L.geoJSON(walker303,{}).addTo(mymap);
 
 //(18) Bonus action: think about how you would write some pop up text into your "pointofinterest" layer. Look at how it is done above. Read online help. Ask your neighbor. There are multiple approaches!
 
