@@ -65,7 +65,7 @@
 
     L.circle([41.7919509033851, -87.6008962279752], 200, {
         color: 'red',
-        fillColor: '#f03',
+        fillColor: '#00FF00',
         fillOpacity: 0.5
     }).addTo(mymap);
 
@@ -150,20 +150,20 @@
         [41.78889106742568, -87.59718434556508]    
     ]).addTo(mymap);
 
-    function showRockefellerPopup() {
-        var rockefellerCheckbox = document.getElementById("rockefellerCheckbox");
-        if (rockefellerCheckbox.checked) {
-            L.popup()
+    function showRockefellerPopup(checkbox) {
+        if (checkbox.checked) {
+            rockefellerPopup = L.popup()
                 .setLatLng([41.78825281357345, -87.59692409424544])
                 .setContent("I am Rockefeller!")
                 .openOn(mymap);
         } else {
             if (rockefellerPopup) {
-                rockefellerPopup.remove();
+                mymap.closePopup(rockefellerPopup);
+                rockefellerPopup = null;
             }
         }
     }
-    
+
     //(14)three nodes - the above code is drawing is a triangle... you can add more nodes to the polygon by separating each with a comma
 
     //(15)here you could set the attributes of the popup instead of setting each to specific text
