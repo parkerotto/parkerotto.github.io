@@ -30,7 +30,7 @@
 <input type="button" id="popupbutton" value="Show Popup" onclick="popup()"/>
 
 <ul id="checkBundle">
-    <li><label><input type="checkbox" id="walkerCheckbox" onchange="showWalkerPopup()" />Walker</label></li>
+    <li><label><input type="checkbox" id="walkerCheckbox" onchange="showWalkerPopup(this)" />Walker</label></li>
     <li><label><input type="checkbox" id="mansuetoCheckbox" onchange="showMansuetoPopup()" />Mansueto</label></li>
     <li><label><input type="checkbox" id="rockefellerCheckbox" onchange="showRockefellerPopup()" />Rockefeller</label></li>
 </ul>
@@ -142,7 +142,7 @@
 };
 
 //(17) you can also comment out mapped items if you do not want them to draw. note that the var reference above is still present but below i have turned off a layer
-	L.geoJSON(walker303,{}).addTo(mymap);
+	L.geoJSON(walker303).addTo(mymap);
 
 	function showWalkerPopup(checkbox) {
         var walkerPopup = L.popup()
