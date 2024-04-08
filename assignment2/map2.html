@@ -21,7 +21,7 @@
     
   </head>
   <body>
-    <div id="map"></div>
+    <div id="map" style="width: 1100px; height: 1100px;"></div>
 
     <script type="text/javascript">
       var map = L.map('map', {
@@ -68,7 +68,7 @@ TANA, DeLorme, and NPS',
 
       var provinces = L.geoJson(provinces, {style:style}).addTo(map);
 
-      var coviddata = L.geoJson(coviddata).addTo(map);
+      var covidData = L.geoJson(covidData).addTo(map);
 
       var basemaps = {
         "Terrain": canvas,
