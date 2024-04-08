@@ -12,6 +12,12 @@
       html, body { margin: 0; padding: 0; height: 100%; }
       #map { min-height: 100%; }
     </style>
+
+    <script
+      src="https://parkerotto.github.io/assignment2/provinces.js"></script>
+
+    <script
+      src="https://electionmaps.github.io/coviddata.js"></script>
     
   </head>
   <body>
@@ -37,6 +43,10 @@ GIS User Community'
 TANA, DeLorme, and NPS',
           maxZoom: 13
       }).addTo(map);
+
+      var provinces = L.geoJson(provinces).addTo(map);
+
+      var coviddata = L.geoJson(coviddata).addTo(map);
       
     </script>
   </body>
