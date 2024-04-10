@@ -57,6 +57,14 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
       }).addTo(map);
 
       var provinces = new L.geoJson(provinces, {style:style}).addTo(map);
+
+      var minValue = 100;
+
+      var minRadius = 5;
+
+      function calcRadius(val) {
+        return 0.9 * Math.pow(val/minValue, .7) * minRadius;
+      }
       
       var covidData = new L.geoJson(covidData, {
         pointToLayer: function(feature, ll){
