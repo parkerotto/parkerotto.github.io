@@ -56,7 +56,12 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
           maxZoom: 13
       }).addTo(map);
 
-      var provinces = new L.geoJson(provinces, {style:style}).addTo(map);
+      var provinces = new L.geoJson(provinces, {
+        style:style,
+        onEachFeature: function(feature, layer) {
+          layer.bindTooltip(feature.properties.NAME_PY, {permanent: true, direction: 'center', className: 'province-label'});
+        }
+      }).addTo(map);
 
       var minValue = 100;
 
