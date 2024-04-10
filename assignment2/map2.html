@@ -106,8 +106,8 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
 
       var overlaymaps = {
         "China Provinces": provinces,
-        "Covid Data": covidData,
-        "Province Names": provNames
+        "Covid Data": covidData//,
+       // "Province Names": provNames
       };
 
       L.control.layers(basemaps, overlaymaps, {collapsed:false}).addTo(map);
