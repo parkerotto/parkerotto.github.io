@@ -65,8 +65,14 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
       }).addTo(map);
 
       var provinces = new L.geoJson(provinces, {
-        style:style,
-        onEachFeature: function(feature, layer) {
+        style:style//,
+        //onEachFeature: function(feature, layer) {
+          //layer.bindTooltip(feature.properties.NAME_PY, {permanent: true, direction: 'center', className: 'province-label'});
+        //}
+      }).addTo(map);
+
+      var provNames = new L.geoJSN(provinces, {
+        onEachFeature: function (feature, layer) {
           layer.bindTooltip(feature.properties.NAME_PY, {permanent: true, direction: 'center', className: 'province-label'});
         }
       }).addTo(map);
@@ -100,7 +106,8 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
 
       var overlaymaps = {
         "China Provinces": provinces,
-        "Covid Data": covidData
+        "Covid Data": covidData,
+        "Province Names": provNames
       };
 
       L.control.layers(basemaps, overlaymaps, {collapsed:false}).addTo(map);
