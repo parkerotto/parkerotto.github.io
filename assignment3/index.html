@@ -36,8 +36,19 @@
         tms: false,
         attribution: 'Created by QGIS algorithm: Generate XYZ tiles (Directory)'
       }).addTo(map);
+
+      var onEachFeature = function (feature, layer) {
+        if (Feature.properties) {
+          var prop = feature.properties;
+          var popup = '<h3>'+prop['Name']+'</h3>'+'CTA Bus Stop';
+          
+          feature.layer = layer;
+          layer.bindPopup(popup, {maxWidth: 300});
+        }
+      };
     
       var bus = new L.geoJson(bus, {
+        onEachFeature : onEachFeature,
         pointToLayer : function(Feature, ll){
         return L.circleMarker(ll, {
           color: '#000000',
