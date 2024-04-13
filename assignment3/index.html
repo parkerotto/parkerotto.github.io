@@ -30,7 +30,7 @@
       var map = L.map('map', { attributionControl: false } ).setView([41.79462261930913, -87.60026895028902], 14.0);
       L.control.attribution( { prefix: false } ).addTo( map );
       
-      var tilesource_layer = L.tileLayer('parkerotto.github.io/assignment3/{z}/{x}/{y}.png', {
+      var tilesource_layer = L.tileLayer('https://parkerotto.github.io/assignment3/{z}/{x}/{y}.png', {
         minZoom: 13,
         maxZoom: 15,
         tms: false,
