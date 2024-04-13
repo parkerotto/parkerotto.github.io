@@ -36,14 +36,6 @@
         tms: false,
         attribution: 'Created by QGIS algorithm: Generate XYZ tiles (Directory)'
       }).addTo(map);
-
-      var minValue = 100;
-
-      var minRadius = 5;
-
-      function calcRadius(val) {
-        return .9 * Math.pow(val/minValue, .5) * minRadius;
-      };
     
       var bus = new L.geoJson(bus, {
         pointToLayer : function(Feature, ll){
@@ -53,7 +45,7 @@
           weight: 1,
           fillColor: '#FFFF00',
           fillOpacity: .5,
-          radius: calcRadius(Feature.properties['8'])
+          radius: 1)
         });
         }
       }).addTo(map);
