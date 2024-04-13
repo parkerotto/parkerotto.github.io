@@ -38,7 +38,7 @@
       }).addTo(map);
 
       var onEachFeature = function (feature, layer) {
-        if (Feature.properties) {
+        if (feature.properties) {
           var prop = feature.properties;
           var popup = '<h3>'+prop['Name']+'</h3>'+'CTA Bus Stop';
           
@@ -49,7 +49,7 @@
     
       var bus = new L.geoJson(bus, {
         onEachFeature : onEachFeature,
-        pointToLayer : function(Feature, ll){
+        pointToLayer : function(feature, ll){
         return L.circleMarker(ll, {
           color: '#000000',
           opacity: 1,
