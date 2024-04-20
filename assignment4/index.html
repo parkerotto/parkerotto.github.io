@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+        <title>Assignment 4 | Parker Otto</title>
+        <style> html, body, #viewDiv {padding: 0; margin: 0; height: 100%; width: 100%;}
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css"/>
+    <script src="https://js.arcgis.com/4.29/"></script>
+
+        <script>
+            require([
+                "esri/Map", 
+                "esri/views/MapView", 
+                "esri/layers/TileLayer", 
+                "esri/layers/GeoJSONLayer",
+                "esri/layers/FeatureLayer",
+                "esri/widgets/Legend"
+            ], function(Map, MapView, TileLayer, GeoJSONLayer, FeatureLayer, Legend) {
+                const url = "https://rcshepard.github.io/downtownlincoln.geojson";
+                const fpUrl = "https://parkerotto.github.io/assignment4/lincolnFootprints2.geojson";
+                const fpRenderer = {
+                    type: "simple",
+                    symbol: {
+                        type: "simple-fill",
+                        color: [169, 169, 169, 0.5],
+                        outline: {
+                            color: [0, 0, 0, 1],
+                            width: [0.5]
+                        }
+                    }
+                };
+                const renderer = {
+                    type: "simple",
+                    field: "CNTASSDVAL",
+                        legendOptions: {title: "Assessed values in Lincoln"},
+                    symbol: {
+                        type: "simple-marker",
+                        color: "red",
+                        outline: {
+                            color: "white"
+                        }
+                    },
+                    visualVariables: [
+                        {
+                            type: "size",
+                            field: "CNTASSDVAL",
+                            stops: [
+                                {
+                                    value: 100000,
+                                    size: "7px",
+                                    label: "Low"
+                                },
+                                {
+                                    value: 500000,
+                                    size: "17px",
+                                    label: "Medium"
+                                },
+                                {
+                                    value: 1000000,
+                                    size: "26px",
+                                    label: "High"
+                                }
+                            ]
+                        }
+                    ]
+                };
+                const geojsonLayer = new GeoJSONLayer({
+                    url: url,
+                    copyright: "© Parker Otto (2024)",
+                    renderer: renderer
+                });
+                const footprints = new GeoJSONLayer({
+                    url: fpUrl,
+                    renderer: fpRenderer
+                });
+                var thebasemap = new TileLayer({
+                    url:"https://gisext.lincoln.ne.gov/arcgis/rest/services/GIS/LancoBasemap/MapServer/"
+                });
+                var featureLayer = new FeatureLayer({
+                    url: "https://gisext.lincoln.ne.gov/arcgis/rest/services/Parks/Park_Boundaries/MapServer/0"
+                });
+                var map = new Map({
+                    layers: [thebasemap, geojsonLayer, footprints]
+                });
+                var view = new MapView({
+                    container: "viewDiv",
+                    map: map,
+                    zoom: 16,
+                    center: [-96.701073, 40.807980] // longitude, latitude - change this as needed 
+                });
+                const legend = new Legend({
+                    view: view,
+                    layerInfos: [{
+                        layer: geojsonLayer,
+                        title: "Assignment 4 Symbols",
+                    }]
+                });
+                view.ui.add(legend, "bottom-right");
+                map.add(featureLayer);
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="viewDiv"></div>
+    </body>
+</html>
