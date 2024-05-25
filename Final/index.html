@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Roaring '20s: Hyde Park</title>
+
+        <meta charset="utf-8"/>
+
+        <meta name="viewport" 
+            content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" 
+            href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+            integrity="sha384-o/2yZuJZWGJ4s/adjxVW71R+EO/LyCwdQfP5UWSgX/w87iiTXuvDZaejd3TsN7mf"
+            crossorigin=""/>
+            <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+                integrity="sha384-okbbMvvx/qfQkmiQKfd5VifbKZ/W8p1qIsWvE1ROPUfHWsDcC8/BnHohF7vPg2T6"
+                crossorigin=""></script>
+
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                } 
+            html, 
+            body, 
+            #map{width: 100%;height: 97%;
+            }
+        </style>
+
+        <style>
+            .legend-item-container {
+                display: flex;
+                align-items: center; /* Vertically center the items */
+                margin-bottom: 5px; /* Add margin between each legend item */
+                margin-left: 20px;
+            }
+            .legend-item {
+                margin-right: 10px; /* Add spacing between the red box and text */
+            }
+        </style>
+
+        <script src="r20hp.js"></script>
+
+        <script src="zoning.js"></script>
+
+    </head>
+    
+    <body>
+        <h1>Visualizing Urban Renewal: 1925-6 Hyde Park Compared to 2023 Zoning</h1>
+        <div id="map"></div>
+
+        <script>
+            var map = L.map('map', {
+                attributionControl: false})
+                .setView([41.794, -87.5948], 16);
+                L.control.attribution({prefix: false}).addTo(map);
+
+            var tilesource_layer = 
+                L.tileLayer('file:////private/var/folders/sy/24ns7fm515v0pp8mt78tq7l00000gn/T/processing_CzrPHq/517d1219a410445e847f26a4fdff6d37/OUTPUT_DIRECTORY/{z}/{x}/{y}.png', 
+                {minZoom: 15, 
+                maxZoom: 19, 
+                tms: false, 
+                attribution: 'Created by Parker Otto (2024) using QGIS.  2023 Street Centerlines, 2016 Chicago Park District Boundaries, 2012 Waterways, and 2023 Commuinty Area Boundaries from the Chicago Data Portal.'
+                }).addTo(map);
+            
+            var imagery =
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                });    
+
+            function getZoningColor(fudgeZone) {
+                switch (fudgeZone) {
+                    case 'Business and Commercial' : return 'orange';
+                    case 'Planned Development' : return 'maroon';
+                    case 'Multi-Family Residential' : return 'purple';
+                    case 'Single-Family Residential' : return 'yellow';
+                    case 'Open Space' : return 'lime';
+                    default : return 'gray';
+                }
+            };
+
+            function getColorByUse(use) {
+                switch (use) {
+                    case 'Church' : return '#9fed18'; // Lime
+                    case 'Dwelling' : return '#987db7'; // Lavender
+                    case 'Hotel' : return '#efc866'; // Yellow
+                    case 'Industrial' : return '#00e9fe'; // Light Blue
+                    case 'Institutio' : return '#ff8fd6'; // Pink
+                    case 'Store' : return '#d9615b'; // Burnt Siena
+                    case 'Flat' : return '#3596ce'; // Blue
+                    case 'UChicago' : return '#800000'; // Maroon
+                    default : return '#808080'; // Gray
+                }
+            };
+
+            function getChurchStyle(use) {
+                switch (use) {
+                    case 'Church' : return '#9fed18';
+                    default : return 'transparent';
+                }
+            };
+
+            function getDwellingStyle(use) {
+                switch (use) {
+                    case 'Dwelling' : return '#987db7';
+                    default : return 'transparent';
+                }
+            };
+
+            function getHotelStyle(use) {
+                switch (use) {
+                    case 'Hotel' : return '#efc866';
+                    default : return 'transparent';
+                }
+            };
+
+            function getIndustrialStyle(use) {
+                switch (use) {
+                    case 'Industrial' : return '#00e9fe';
+                    default : return 'transparent';
+                }
+            };
+            
+            function getInstitutionalStyle(use) {
+                switch (use) {
+                    case 'Institutio' : return '#ff8fd6'; // Pink
+                    default : return 'transparent';
+                }
+            };
+
+            function getStoreStyle(use) {
+                switch (use) {
+                    case 'Store' : return '#d9615b'; // Burnt Siena
+                    default : return 'transparent';
+                }
+            };
+
+            function getFlatStyle(use) {
+                switch (use) {
+                    case 'Flat' : return '#3596ce'; // Blue
+                    default : return 'transparent';
+                }
+            };
+
+            function getUchicagoStyle(use) {
+                switch (use) {
+                    case 'UChicago' : return '#800000'; // Maroon
+                    default : return 'transparent'; // Gray
+                }
+            };
+
+       //     function getFillOpacityByUse(use) {
+     //           switch (use) {
+     //               case 'Church': return 0.5;
+   //                 case 'Flat': return 0.9;
+   //                 default: return 0.7;
+   //             }
+  //          };
+
+            function style(feature){
+                return {
+                    fillColor: 'transparent',
+                    weight: 2,
+                    opacity: 1,
+                    color: 'gray',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function satStyle(feature){
+                return {
+                    fillColor: 'gray',
+                    weight: 2,
+                    opacity: 0.8,
+                    color: 'white',
+                    fillOpacity: 0.4
+                }
+            };
+
+            function churchStyle(feature){
+                return {
+                    fillColor: getChurchStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function dwellingStyle(feature){
+                return {
+                    fillColor: getDwellingStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function hotelStyle(feature){
+                return {
+                    fillColor: getHotelStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function industrialStyle(feature){
+                return {
+                    fillColor: getIndustrialStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function institutionalStyle(feature){
+                return {
+                    fillColor: getInstitutionalStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function storeStyle(feature){
+                return {
+                    fillColor: getStoreStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function flatStyle(feature){
+                return {
+                    fillColor: getFlatStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function uchicagoStyle(feature){
+                return {
+                    fillColor: getUchicagoStyle(feature.properties.Use),
+                    weight: 0.3,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9
+                }
+            };
+
+            function customStyle(feature) {
+                return {
+                    fillColor: getColorByUse(feature.properties.Use),
+                    weight: 1,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.9//getFillOpacityByUse(feature.properties.Use)
+                }
+            };
+
+            function zoningColor(feature){
+                return {
+                    fillColor: getZoningColor(feature.properties.fudgeZone),
+                    weight: 2,
+                    opacity: 1,
+                    color: 'black',
+                    fillOpacity: 0.4
+                }
+            };
+            
+            var zoningOEF = function (feature, layer) {
+                if (feature.properties) {
+                    var prop = feature.properties;
+                    var popup1 =
+                        '<h3>Zoning</h3>' +
+                        prop['fudgeZone']
+                        + '<br><br><small><i>Zoning Class: ' + prop['zone_class'] +'</i></small>'
+                        + '<br><small><i>Zoning Type: ' + prop['zone_type'] + '</i></small>';
+
+                    feature.layer = layer;
+                    layer.bindPopup(popup1, {maxWidth: 300});
+                }
+            };
+
+            var onEachFeature = function (feature, layer) {
+                if (feature.properties) {
+                    var prop = feature.properties;
+                    var popup =
+                        '<h3>Sanborn Fire Insurance Data</h3>' +
+                        '<b>Sanborn: </b>' + prop['Sanborn'] +
+                        '<br><b>Footprint Area: </b>' + prop['area'] + ' m<sup>2</sup>' +
+                        '<br><br><b>Footprint Year: </b>' + prop['Year'] +
+                        '<br><br><b>Use: </b>' + prop['Use'] +
+                        '<br><br><br><small>Coordinates: <i>' + prop['lat'] + ', ' + prop['long'] + '</i></small>';
+
+                    feature.layer = layer;
+                    layer.bindPopup(popup, { maxWidth: 300 });
+
+                    layer.on('click', function () {
+                    if (!layer.halo) {
+                        var bounds = layer.getBounds();
+
+                        var corner1 = bounds.getNorthWest();
+                        var corner2 = bounds.getNorthEast();
+                        var corner3 = bounds.getSouthEast();
+                        var corner4 = bounds.getSouthWest();
+
+                        var corners = [corner1, corner2, corner3, corner4, corner1];
+
+                        if (map.clickedLayer && map.clickedLayer.halo) {
+                            map.removeLayer(map.clickedLayer.halo);
+                            map.clickedLayer.halo = null;
+                        }
+
+                        layer.halo = L.polygon(corners, {
+                            color: 'yellow',
+                            weight: 7,
+                            opacity: 0.6,
+                            fillOpacity: 0.1,
+                            fillColor: 'yellow'
+                        }).addTo(map);
+                            
+                        map.clickedLayer = layer;
+
+                        setTimeout(function() {
+                            if (layer.halo) {
+                                map.removeLayer(layer.halo);
+                                layer.halo = null;
+                                map.clickedLayer = null; 
+                            }
+                        }, 1000);
+                        } 
+                        else {
+                            map.removeLayer(layer.halo);
+                            layer.halo = null;
+                            map.clickedLayer = null; 
+                        }
+                    }
+                );
+                }
+            };
+
+            var footprints = new L.geoJson(r20hp, 
+                {
+                    style : style,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var satFootprints = new L.geoJson(r20hp, 
+                {
+                    style : satStyle,
+                    onEachFeature : onEachFeature
+                }
+            );
+
+            var classifiedFootprints = new L.geoJson(r20hp, 
+                {
+                    style : customStyle,
+                    onEachFeature : onEachFeature
+                }
+            ).addTo(map);
+
+            var churchFootprints = new L.geoJson(r20hp,
+                {
+                    style : churchStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var dwellingFootprints = new L.geoJson(r20hp,
+                {
+                    style : dwellingStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var hotelFootprints = new L.geoJson(r20hp,
+                {
+                    style : hotelStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var industrialFootprints = new L.geoJson(r20hp,
+                {
+                    style : industrialStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+    
+            var institutionalFootprints = new L.geoJson(r20hp,
+                {
+                    style : institutionalStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var storeFootprints = new L.geoJson(r20hp,
+                {
+                    style : storeStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var flatFootprints = new L.geoJson(r20hp,
+                {
+                    style : flatStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var uchicagoFootprints = new L.geoJson(r20hp,
+                {
+                    style : uchicagoStyle,
+                    onEachFeature: onEachFeature
+                }
+            );
+
+            var zoningMap = new L.geoJson(zoning,
+                {
+                    style: zoningColor,
+                    onEachFeature: zoningOEF
+                }
+            );
+
+            // Create legend
+            var legend = L.control({position: 'bottomright'});
+
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'legend');
+                    div.style.backgroundColor = 'white'; // Set background color to white
+                    div.style.width = '150px'; // Set the width of the legend
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item"></div> <span><b>Building Uses</b></span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #9fed18; width: 20px; height: 20px;"></div> <span>Church</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #efc866; width: 20px; height: 20px;"></div> <span>Hotel</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #00e9fe; width: 20px; height: 20px;"></div> <span>Industrial</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #ff8fd6; width: 20px; height: 20px;"></div> <span>Institutional</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #800000; width: 20px; height: 20px;"></div> <span>UChicago</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #d9615b; width: 20px; height: 20px;"></div> <span>Stores</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #3596ce; width: 20px; height: 20px;"></div> <span>Flats</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #987db7; width: 20px; height: 20px;"></div> <span>Dwellings</span></div>';
+                    div.innerHTML += '<div class="legend-item-container"><div class="legend-item" style="background-color: #808080; width: 20px; height: 20px;"></div> <span>Other/No Data</span></div>';
+                    
+                return div;
+            };
+
+            legend.addTo(map);
+
+
+            var basemaps = {
+                "Default": tilesource_layer,
+                "Satellite": imagery
+            };
+
+            var overlaymaps = {
+                "Blank Footprints": footprints,
+                "Blank Footprints (Satellite)": satFootprints,
+                "2023 Zoning Map" : zoningMap,
+                "Classified Footprints": classifiedFootprints,
+                "Churches" : churchFootprints,
+                "Hotels" : hotelFootprints,
+                "Industrial" : industrialFootprints,
+                "Institutional" : institutionalFootprints,
+                "UChicago" : uchicagoFootprints,
+                "Stores" : storeFootprints,
+                "Flats" : flatFootprints,
+                "Dwellings" : dwellingFootprints
+            };
+
+            L.control.layers(
+                basemaps, overlaymaps, {collapsed:false}).addTo(map);
+        
+        </script>
+    </body>
+</html>
