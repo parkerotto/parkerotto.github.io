@@ -105,7 +105,7 @@
             popupAnchor: [-1, -1]
             });
             
-        var firstlayer = L.geoJson(data, {
+        var firstlayer = L.geoJson(omaJson, {
             // add popups
             onEachFeature: onEachFeature,
             pointToLayer: function(feature, latlng) {
